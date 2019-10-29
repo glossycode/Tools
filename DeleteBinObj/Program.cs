@@ -9,21 +9,21 @@ namespace DeleteBO
 {
     class Program
     {
-        static log4net.ILog _log;
+        static log4net.ILog _logger;
         static void Main(string[] args)
         {
-            Logger.Setup();
+            Logger.Setup(false);
 
-            _log = log4net.LogManager.GetLogger(nameof(Program));
-            _log.Info("deleting bin and obj folders. sure ? [Y]");
+            _logger = log4net.LogManager.GetLogger(nameof(Program));
+            _logger.Info("Deleting bin and obj folders. sure ? [Y]");
             ConsoleKeyInfo key = Console.ReadKey();
+
             if (key.Key == ConsoleKey.Y)
             {
                 try
                 {
                     string d = Environment.CurrentDirectory;
-                    DeleteFolders(d, "bin");
-                    DeleteFolders(d, "obj");
+                    DeleteSubFolders(d, new List<string>() { "bin", "obj" });
                 }
                 catch (System.Exception ex)
                 {
@@ -31,19 +31,20 @@ namespace DeleteBO
                 }
             }
         }
-        private static void DeleteFolders(string d, string folder)
-        {
-            foreach (string d2 in Directory.GetDirectories(d, folder, SearchOption.AllDirectories))
+        private static void DeleteSubFolders(string path, List<string> folders)
+        {            
+            foreach (string d2 in Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories)
+                .Where(s => folders.Contains(new DirectoryInfo(s).Name)))
             {
                 try
                 {
-                    _log.Info(d2);
-                    Directory.Delete(d2, true); //
+                    _logger.Info($"Deleting : {d2}");
+                    Directory.Delete(d2, true);
                 }
                 catch (Exception ex)
                 {
-                    _log.Error($"error deleting {d2}: {ex}");
-                }                
+                    _logger.Error($"Error   : {ex}");
+                }
             }
         }
     }
