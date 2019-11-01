@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{95930D13-31D3-49E3-8718-0F3D4A568D6E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DeleteBO</RootNamespace>
+    <RootNamespace>DeleteBinObj</RootNamespace>
     <AssemblyName>DeleteBinObj</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
